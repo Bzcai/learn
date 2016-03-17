@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>这台VPS是怎么来的(1)</title>
+
+</head>
+<body>
+<h1>这台VPS是怎么来的(1)</h1>
+
+<h3>起因</h3>
+
+<p>最近一直想重新把 <em>WordPress</em> 拾起来, 这次没考虑虚拟主机, 毕竟不太自由, 于是想着买个 VPS 手工来安装一下<em> WordPress</em></p>
+
+<h3>挑选 vps</h3>
+
+<p>市面上提供 vps 的供应商实在太多, 我就想找个最便宜的放个 blog, 首先排除国内各种什么云, 原因你懂得, 广受好评的linode最热, 可惜太贵, 最低档都要10刀一个月, 一个 blog 不值得. 最后选择了 hosthatch 的一档OpenVZ, ip在香港, 配置:</p>
+
+<ul>
+<li>CPU 2*Intel E5 2.1GHz</li>
+<li>256M RAM</li>
+<li>30GB SSD</li>
+<li>1TB Bandwidth</li>
+</ul>
+
+
+<p>你猜价格多少, 一年只要30刀,合下来一个月才2.5刀, 超便宜, 而且硬盘30GB, 比其他家都多, 于是就这么愉快的决定论.</p>
+
+<h3>安装系统</h3>
+
+<p>购买 vps 的时候,直接安装了 ubuntu 14.04, 我还是习惯 debian 类的 Linux, 不喜欢 CentOS.</p>
+
+<p>纯净系统不带任何软件, 哦, 不对, 他自带了 apache2, 还导致我装的 nginx 无法启动, 因为apache2占用了80和443端口.</p>
+
+<p>而我是想安装 nginx+php+mysql 的,于是先删除了 apache2.</p>
+
+<p>hosthacth不好的地方就是他预装的系统没有设置默认的 locale 和语言.</p>
+
+<p>我们先来查看当前系统的语言情况</p>
+
+<pre><code>    locale
+</code></pre>
+
+<p>编辑配置文件，将zh_US.UTF-8改为en_US.UTF-8，zh改为en</p>
+
+<pre><code>sudo nano /etc/default/locale
+LANG="en_US.UTF-8"
+LANGUAGE="en_US:en"
+</code></pre>
+
+<p>继续查看更改后的系统语言变量，如果出现下列错误，说明没安装en_US的</p>
+
+<pre><code>local
+qii@ubuntu:~$ locale
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+</code></pre>
+
+<p>查看系统内安装的locale</p>
+
+<pre><code>qii@ubuntu:~$ locale -a
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_MESSAGES to default locale: No such file or directory
+locale: Cannot set LC_COLLATE to default locale: No such file or directory
+C
+POSIX
+zh_CN.utf8
+zh_SG.utf8
+</code></pre>
+
+<p>看吧，没装en_US.UTF-8, 安装en_US.UTF-8</p>
+
+<pre><code>sudo locale-gen en_US.UTF-8
+</code></pre>
+
+<p>再次查看，应该一切正常了。</p>
+
+<pre><code>qii@ubuntu:/usr/share/locales$ locale
+LANG=en_US.UTF-8
+LANGUAGE=en_US:en
+LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8"
+LC_TIME="en_US.UTF-8"
+LC_COLLATE="en_US.UTF-8"
+LC_MONETARY="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8"
+LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8"
+LC_TELEPHONE="en_US.UTF-8"
+LC_MEASUREMENT="en_US.UTF-8"
+LC_IDENTIFICATION="en_US.UTF-8"
+LC_ALL=
+</code></pre>
+
+<p>注意上面的 <strong>'LC_ALL='</strong>, 下面会讲到</p>
+
+<h5>安装 nginx</h5>
+
+<p>Ubuntu 安装软件很方便, 直接使用 apt-get 即可</p>
+
+<pre><code>apt-get instll nginx  
+</code></pre>
+
+<p>安装途中报错, 怎么也不能完成, 原因就是 上面的<strong> LC_ALL= </strong>没有值,这时候再次编辑 locale 文件</p>
+
+<pre><code>sudo vi /etc/default/locale
+</code></pre>
+
+<p>在文件中添加一行</p>
+
+<pre><code>LC_ALL=C
+</code></pre>
+
+<p>保存退出后, nginx 就安装成功了.</p>
+
+<p>然而本机已经有了 apache2, 占用了80和443端口, 哪我们要先杀掉 apache2的进程, 腾出80和443端口给 nginx<br/>
+查询80 端口被占用的命令</p>
+
+<pre><code>netstat -lnp|grep 80
+</code></pre>
+
+<p>同理, 把80换为443</p>
+
+<pre><code>netstat -lnp|grep 443
+</code></pre>
+
+<p>找到对应的进程后,使用</p>
+
+<pre><code>kill -9 进程 pid
+</code></pre>
+
+<p>杀掉进程, 然后 nginx 就可以顺利启动了</p>
+</body>
+</html>
