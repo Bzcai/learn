@@ -1,6 +1,7 @@
 #! /Library/Frameworks/Python.framework/Versions/3.5/bin/python3
 # -*- coding: UTF-8 -*-
 #  my first code
+# first mod
 class Animal(object):
     def run(self):
         print('Animal is running...')
