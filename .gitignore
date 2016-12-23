@@ -1,20 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @Bzcai
- Watch 1,910
-  Star 44,517
-  Fork 18,191 github/gitignore
- Code  Pull requests 178  Projects 0  Pulse  Graphs
-Branch: master Find file Copy pathgitignore/Python.gitignore
-cb9eec4  26 days ago
-@rolando rolando Ignore wheels directory.
-51 contributors @arcresu @Metallicow @misaelnieto @svkampen @vltr @matheussl @Lucretiel @hugovk @Harrison-G @EvandroLG @shiftkey @toanant @Visgean @nvie @skuschel @sigo @borntyping @roll @rolando @reinout @rayshan @relekang @manavm @llonchj @kdeldycke @jspahrsummers and others
-RawBlameHistory     
-92 lines (73 sloc)  1.04 KB
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -106,5 +89,3 @@ ENV/
 
 # Rope project settings
 .ropeproject
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
